@@ -27,5 +27,3 @@ class TestOrderFeedPage:
     def test_num_order_in_work(self, driver):
         result = OrderFeedPage(driver).base_check_number_order_in_work()
         assert f'0{result[0]}' == f'{result[1]}'
-# pytest tests --alluredir=allure_results
-# pytest tests\test_order_feed_page.py
