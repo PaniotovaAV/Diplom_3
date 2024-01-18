@@ -70,4 +70,4 @@ class TestHomePage:
         login_page.base_check_login()
         home_page.base_check_orders_feed()
         home_page.base_check_drag_and_drop()
-        assert 'Ваш заказ начали готовить' in home_page.base_check_checkout()
+        assert 'Ваш заказ начали готовить' in home_page.base_check_text_order()

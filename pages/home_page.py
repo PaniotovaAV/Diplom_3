@@ -205,8 +205,8 @@ class HomePage(BasePage):
         self.drag__and__drop()
         return self.find_element_counter()
 
-    @allure.step('Общие шаги получения номера заказа зарегистрированного пользователя')
-    def base_check_model_order(self):
+    @allure.step('Общие шаги получения текста всплывающего окна зарегистрированного пользователя')
+    def base_check_text_order(self):
         self.click_button_checkout()
         return self.text_model_order()
 
