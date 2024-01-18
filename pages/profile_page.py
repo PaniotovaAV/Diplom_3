@@ -1,12 +1,18 @@
 import allure
-from data import *
 from locators.profile_page_locators import ProfileLocators
 from pages.base_page import BasePage
-from pages.home_page import HomePage
-from pages.login_page import LoginPage
+from urls import *
 
 
 class ProfilePage(BasePage):
+
+    @allure.step('Ожидаем загрузку страницы "Личный кабинет"')
+    def loading_account_profile_page(self):
+        return self.loading_page(URL_ACCOUNT_PROFILE)
+
+    @allure.step('Ожидаем загрузку страницы "История заказов"')
+    def loading_history_page(self):
+        return self.loading_page(URL_ORDER_HISTORY)
 
     @allure.step('Нажимаем на кнопку "История заказов" в личном кабинете')
     def click_button_order_history(self):
@@ -35,30 +41,13 @@ class ProfilePage(BasePage):
         locator = ProfileLocators.LOGOUT_BUTTON_LOCATOR
         return self.wait_element_clickable(locator)
 
-    @allure.step('Общие шаги для авторизации')
-    def base_check_login(self):
-        self.loading_page(URL_HOME_PAGE)
-        HomePage.wait_clickable_login_account(self)
-        HomePage.click_login_account(self)
-        self.loading_page(URL_LOGIN_PAGE)
-        LoginPage.click_email(self)
-        LoginPage.set_email(self)
-        LoginPage.click_password(self)
-        LoginPage.set_password(self)
-        LoginPage.wait_clickable_login_button(self)
-        LoginPage.click_button_enter(self)
-        self.loading_page(URL_HOME_PAGE)
-
     @allure.step('Общие шаги для перехода в "Личный кабинет"')
     def base_check_profile(self):
-        self.base_check_login()
-        HomePage.click_button_account(self)
         self.loading_page(URL_ACCOUNT_PROFILE)
         return self.current__url()
 
     @allure.step('Общие шаги для перехода в раздел "История заказов" в личном кабинете')
     def base_check_order_history(self):
-        self.base_check_profile()
         self.loading_page(URL_ACCOUNT_PROFILE)
         self.wait_clickable_logout_button()
         self.find_button_order_history()
@@ -68,9 +57,20 @@ class ProfilePage(BasePage):
 
     @allure.step('Общие шаги выхода из аккаунта')
     def base_check_logout(self):
-        self.base_check_profile()
         self.loading_page(URL_ACCOUNT_PROFILE)
         self.wait_clickable_logout_button()
         self.click_button_logout()
         self.loading_page(URL_LOGIN_PAGE)
         return self.current__url()
+
+    @allure.step('Общие шаги для нажатия на кнопку "История заказов"')
+    def base_check_click_button_order_history(self):
+        self.wait_visibility_button_order_history()
+        self.find_button_order_history()
+        self.click_button_order_history()
+
+    @allure.step('Общие шаги для перехода между страницами "Профиль" и "История заказов"')
+    def base_check_switch_over_account_profile_and_history_pages(self):
+        self.loading_account_profile_page()
+        self.base_check_click_button_order_history()
+        self.loading_history_page()

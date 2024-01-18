@@ -45,5 +45,6 @@ class BasePage:
 
     def wait_visibility_of_element_located(self, locator):
         return WebDriverWait(self.driver, 15).until(expected_conditions.visibility_of_element_located(locator))
+
     def wait_presence_of_element_located(self, locator):
         return WebDriverWait(self.driver, 15).until(expected_conditions.presence_of_element_located(locator))

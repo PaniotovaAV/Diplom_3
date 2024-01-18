@@ -1,27 +1,20 @@
 import allure
 from data import *
-from helpers import *
 from locators.login_page_locators import LoginPageLocators
 from pages.base_page import BasePage
+from urls import *
 
 
 class LoginPage(BasePage):
+    @allure.step('Ожидаем загрузку страницы авторизации')
+    def loading_login_page(self):
+        return self.loading_page(URL_LOGIN_PAGE)
 
     @allure.step('Нажимаем на ссылку "Восстановить пароль" на странице регистрации')
     def click_restore_password(self):
         locator = LoginPageLocators.RESTORE_PASSWORD_LOCATOR
         self.wait_visibility_of_element_located(locator)
         return self.click_to_element(locator)
-
-    @allure.step('Запоминаем логин зарегистрированного пользователя')
-    def user_login(self):
-        user_data = register_new_user_and_return_login_password()
-        return user_data[0]
-
-    @allure.step('Запоминаем пароль зарегистрированного пользователя')
-    def user_password(self):
-        user_data = register_new_user_and_return_login_password()
-        return user_data[1]
 
     @allure.step('Нажимаем на поле "Email" на странице авторизации')
     def click_email(self):
@@ -57,3 +50,18 @@ class LoginPage(BasePage):
         locator = LoginPageLocators.LOGIN_BUTTON_LOCATOR
         self.wait_visibility_of_element_located(locator)
         return self.click_to_element(locator)
+
+    @allure.step('Общие шаги для авторизации')
+    def base_check_login(self):
+        self.loading_login_page()
+        self.click_email()
+        self.set_email()
+        self.click_password()
+        self.set_password()
+        self.wait_clickable_login_button()
+        self.click_button_enter()
+
+    @allure.step('Общие шаги для загрузки страницы авторизации и нажатия на ссылку "Восстановить пароль"')
+    def base_check_loading_login_page_and_click_restore_password(self):
+        self.loading_login_page()
+        self.click_restore_password()

@@ -1,5 +1,6 @@
 import requests
 from faker import Faker
+from urls import *
 
 fake = Faker(locale="ru_RU")
 
@@ -26,10 +27,20 @@ def register_new_user_and_return_login_password():
         'password': password,
         'name': name
     }
-    response = requests.post('https://stellarburgers.nomoreparties.site/api/auth/register', data=payload)
+    response = requests.post(URL_REGISTER, data=payload)
     response.json()
     if response.status_code == 200:
         login_pass.append(email)
         login_pass.append(password)
         login_pass.append(name)
     return login_pass
+
+
+def user_login():
+    user_data = register_new_user_and_return_login_password()
+    return user_data[0]
+
+
+def user_password():
+    user_data = register_new_user_and_return_login_password()
+    return user_data[1]
